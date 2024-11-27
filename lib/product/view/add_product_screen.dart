@@ -21,17 +21,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-backgroundColor: Colors.grey,
+      backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: Colors.orange,
-        title: const Text('Please Add The New Products'),
-        actions: [
-          IconButton(
-            onPressed: updateButton,
-            icon: Icon(Icons.update,color: Colors.black,),
-          )
-        ],
+        title: const Text('New Product Add'),
+
       ),
       body: getBody(),
     );
@@ -48,7 +42,7 @@ backgroundColor: Colors.grey,
           createTextField(descriptionController, 'Enter Description'),
           createTextField(priceController, 'Enter Price'),
           createTextField(categoryController, 'Enter Category'),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Center(
@@ -57,7 +51,10 @@ backgroundColor: Colors.grey,
                 backgroundColor: Colors.pink,
               ),
               onPressed: addProductButton,
-              child: Text('Add New Product',style: TextStyle(color:Colors.white),),
+              child: const Text(
+                'Add New Product',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
         ],
@@ -79,10 +76,11 @@ backgroundColor: Colors.grey,
       category: category,
     );
     await provider.addProduct(product);
+
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => ProductScreen(),
+          builder: (context) => const ProductScreen(),
         ));
   }
 
@@ -92,7 +90,9 @@ backgroundColor: Colors.grey,
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10),),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
           hintText: hintText,
         ),
       ),
