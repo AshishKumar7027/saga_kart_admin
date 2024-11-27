@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:saga_kart_admin/core/app_util.dart';
 import 'package:saga_kart_admin/product/model/product_model.dart';
 import 'package:saga_kart_admin/product/provider/product_provider.dart';
-import 'package:saga_kart_admin/product/view/product_screen.dart';
 
 class UpdateScreen extends StatefulWidget {
   const UpdateScreen({super.key});
@@ -29,7 +28,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
         actions: [
           IconButton(
             onPressed: updateButton,
-            icon: Icon(
+            icon: const Icon(
               Icons.update,
               color: Colors.black,
             ),
@@ -52,7 +51,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
           createTextField(priceController, 'Enter Price'),
           createTextField(categoryController, 'Enter Category'),
           createTextField(idController, 'Enter id'),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Center(
@@ -60,8 +59,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.pink,
               ),
-              onPressed: updateProductButton,
-              child: Text(
+              onPressed: updateProduct,
+              child: const Text(
                 'Update Product',
                 style: TextStyle(color: Colors.white),
               ),
@@ -72,7 +71,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
     );
   }
 
-  Future updateProductButton() async {
+  Future updateProduct() async {
     String name = nameController.text;
     String des = descriptionController.text;
     int price = int.parse(priceController.text);
@@ -87,7 +86,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
       category: category,
       sId: id,
     );
-    await provider.updateProduct(product);
+    await provider.updateProduct(id,product);
     provider.authenticated
         ? AppUtil.showTost('Update Product Successfully')
         : AppUtil.showTost('Update Unsuccessfully');
@@ -95,12 +94,12 @@ class _UpdateScreenState extends State<UpdateScreen> {
 
   Widget createTextField(controller, hintText) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(10.0),
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(12),
           ),
           hintText: hintText,
         ),
