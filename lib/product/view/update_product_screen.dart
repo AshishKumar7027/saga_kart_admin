@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:saga_kart_admin/product/model/product_model.dart';
 import 'package:saga_kart_admin/product/provider/product_provider.dart';
@@ -19,13 +16,23 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   final priceController = TextEditingController();
+  final categoryIdController = TextEditingController();
+  final imageController = TextEditingController();
+  final discountAmountController = TextEditingController();
+  final stockController = TextEditingController();
+  // final createdController = TextEditingController();
+  // final modifiedController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     nameController.text = widget.product.name ?? 'no name';
     descriptionController.text = widget.product.description ?? 'no description';
-    priceController.text = widget.product.price?.toString() ?? 'no price';
+    priceController.text = widget.product.price.toString() ?? 'no price';
+     categoryIdController.text = widget.product.categoryId.toString();
+    imageController.text = widget.product.image.toString();
+    discountAmountController.text = widget.product.discountAmount.toString();
+    stockController.text = widget.product.stock.toString();
   }
 
   @override
@@ -37,79 +44,78 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            nameTextFeild(),
-            const SizedBox(height: 16),
-            descTextFeild(),
-            const SizedBox(height: 16),
-            priceTextFeild(),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.pink),
-              onPressed: () async {
-                final updatedProduct = Product(
-                  sId: widget.product.sId,
-                  name: nameController.text,
-                  description: descriptionController.text,
-                  price: int.tryParse(priceController.text),
-                );
-                final provider =
-                    Provider.of<ProductProvider>(context, listen: false);
-                await provider.updateProduct(
-                    widget.product.sId!, updatedProduct);
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Product updated successfully'),
-                      backgroundColor: Colors.blue,
-                    ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              buildTextField(
+                  nameController, 'Product name', TextInputType.text),
+              Sizedbox(20),
+              buildTextField(categoryIdController, 'Enter Name', TextInputType.text),
+              Sizedbox(20),
+              buildTextField(descriptionController, 'Enter Description',
+                  TextInputType.text),
+              Sizedbox(20),
+              buildTextField(
+                  priceController, 'Enter Price', TextInputType.number),
+              Sizedbox(20),
+              buildTextField(discountAmountController, 'Enter Discount',
+                  TextInputType.number),
+              Sizedbox(20),
+              buildTextField(
+                  imageController, 'Enter Image Url', TextInputType.text),
+              Sizedbox(20),
+              buildTextField(
+                  stockController, 'Enter Stock', TextInputType.number),
+              Sizedbox(20),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.pink),
+                onPressed: () async {
+                  final updatedProduct = Product(
+                    categoryId: categoryIdController.text,
+                    name: nameController.text,
+                    description: descriptionController.text,
+                    price: double.parse(priceController.text),
+                    discountAmount: double.parse(discountAmountController.text),
+                    stock: int.parse(stockController.text),
+                    image: imageController.text,
                   );
-                  Navigator.pop(context);
-                }
-              },
-              child: const Text(
-                'Update Product',
-                style: TextStyle(color: Colors.white),
+                  final provider =
+                      Provider.of<ProductProvider>(context, listen: false);
+                  await provider.updateProduct(
+                      widget.product.id??'0', updatedProduct);
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Product updated successfully'),
+                        backgroundColor: Colors.blue,
+                      ),
+                    );
+                    Navigator.pop(context);
+                  }
+                },
+                child: const Text(
+                  'Update Product',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-  TextField priceTextFeild() {
-    return TextField(
-      controller: priceController,
-      keyboardType: TextInputType.number,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          hintText: 'Enter Price'),
-    );
-  }
+  SizedBox Sizedbox(double height) => SizedBox(height: height);
 
-  TextField descTextFeild() {
+  TextField buildTextField(controller, String text, TextInputType inputType) {
     return TextField(
-      controller: descriptionController,
+      controller: controller,
+      keyboardType: inputType,
       decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          hintText: 'Enter Description'),
-    );
-  }
-
-  TextField nameTextFeild() {
-    return TextField(
-      controller: nameController,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          hintText: 'Enter Product Name'),
+          hintText: text),
     );
   }
 }
