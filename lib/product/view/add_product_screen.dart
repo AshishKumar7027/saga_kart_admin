@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:saga_kart_admin/product/model/product_model.dart';
 import 'package:saga_kart_admin/product/provider/product_provider.dart';
-
 import 'package:saga_kart_admin/product/view/product_screen.dart';
 
 class AddProductScreen extends StatefulWidget {
@@ -16,7 +15,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   final priceController = TextEditingController();
-  final categoryController = TextEditingController();
+  final categoryIdController = TextEditingController();
+  final imageController = TextEditingController();
+  final discountAmountController = TextEditingController();
+  final stockController = TextEditingController();
+  final createdController = TextEditingController();
+  final modifiedController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
       appBar: AppBar(
         backgroundColor: Colors.orange,
         title: const Text('New Product Add'),
-
       ),
       body: getBody(),
     );
@@ -36,28 +39,33 @@ class _AddProductScreenState extends State<AddProductScreen> {
   Widget getBody() {
     return Padding(
       padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          createTextField(nameController, 'Enter Product Name'),
-          createTextField(descriptionController, 'Enter Description'),
-          createTextField(priceController, 'Enter Price'),
-          createTextField(categoryController, 'Enter Category'),
-          const SizedBox(
-            height: 20,
-          ),
-          Center(
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.pink,
-              ),
-              onPressed: addProductButton,
-              child: const Text(
-                'Add New Product',
-                style: TextStyle(color: Colors.white),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            createTextField(nameController, 'Enter Product Name'),
+            createTextField(descriptionController, 'Enter Description'),
+            createTextField(priceController, 'Enter Price'),
+            createTextField(categoryIdController, 'Enter Category'),
+            createTextField(imageController, 'Enter Image'),
+            createTextField(discountAmountController, 'Enter Discount'),
+            createTextField(stockController, 'Enter Stock'),
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.pink,
+                ),
+                onPressed: addProductButton,
+                child: const Text(
+                  'Add New Product',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -66,22 +74,24 @@ class _AddProductScreenState extends State<AddProductScreen> {
     String name = nameController.text;
     String des = descriptionController.text;
     int price = int.parse(priceController.text);
-    String category = categoryController.text;
+    String categoryId = categoryIdController.text;
+    int discount = int.parse(discountAmountController.text);
+    int stock = int.parse(stockController.text);
+    String image = imageController.text;
     ProductProvider provider =
         Provider.of<ProductProvider>(context, listen: false);
     Product product = Product(
-      name: name,
-      description: des,
-      price: price,
-      category: category,
-    );
+        name: name,
+        description: des,
+        price: price,
+        categoryId: categoryId,
+        discountAmount: discount,
+        stock: stock,
+        image: image);
     await provider.addProduct(product);
-
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const ProductScreen(),
-        ));
+    if (mounted) {
+      Navigator.pop(context);
+    }
   }
 
   Widget createTextField(controller, hintText) {
