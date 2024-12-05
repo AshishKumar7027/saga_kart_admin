@@ -35,6 +35,7 @@ class CartService {
       throw 'Unable to fetch cart Item';
     }
   }
+
   Future<bool> updateCartQuantity(CartModel cartModel)async{
     String url = ApiEndpoint.cart;
     final header = await ApiEndpoint.getHeader();
