@@ -1,5 +1,7 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:saga_kart_admin/core/app_util.dart';
 import 'package:saga_kart_admin/product/model/product_model.dart';
 import 'package:saga_kart_admin/product/provider/product_provider.dart';
 import 'package:saga_kart_admin/product/view/product_screen.dart';
@@ -42,13 +44,19 @@ class _AddProductScreenState extends State<AddProductScreen> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            createTextField(nameController, 'Enter Product Name'),
-            createTextField(descriptionController, 'Enter Description'),
-            createTextField(priceController, 'Enter Price'),
-            createTextField(categoryIdController, 'Enter Category'),
-            createTextField(imageController, 'Enter Image'),
-            createTextField(discountAmountController, 'Enter Discount'),
-            createTextField(stockController, 'Enter Stock'),
+            createTextField(
+                nameController, 'Enter Product Name', TextInputType.text),
+            createTextField(
+                descriptionController, 'Enter Description', TextInputType.text),
+            createTextField(
+                priceController, 'Enter Price', TextInputType.number),
+            createTextField(
+                categoryIdController, 'Enter Category', TextInputType.text),
+            createTextField(imageController, 'Enter Image', TextInputType.text),
+            createTextField(discountAmountController, 'Enter Discount',
+                TextInputType.number),
+            createTextField(
+                stockController, 'Enter Stock', TextInputType.number),
             const SizedBox(
               height: 20,
             ),
@@ -90,14 +98,17 @@ class _AddProductScreenState extends State<AddProductScreen> {
         image: image);
     await provider.addProduct(product);
     if (mounted) {
+      provider.fetchProducts();
       Navigator.pop(context);
+     AppUtil.showToast('Product Added Successfully');
     }
   }
 
-  Widget createTextField(controller, hintText) {
+  Widget createTextField(controller, hintText, TextInputType inputType) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
+        keyboardType: inputType,
         controller: controller,
         decoration: InputDecoration(
           border: OutlineInputBorder(

@@ -72,26 +72,13 @@ class _UpdateProductScreenState extends State<UpdateCategoryScreen> {
     await provider.updateCategory(widget.category.sId!,categoryModel);
     if (mounted) {
       if (provider.success){
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Category updated successfully'),
-            backgroundColor: Colors.green,
-          ),
-        );
-        Navigator.pop(context);
-        await provider.fetchCategory();
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Category update koni hov k kra '),
-            backgroundColor: Colors.green,
-          ),
-        );
-      }
+       provider.fetchCategory();
+       Navigator.pop(context);
+       Navigator.pop(context);
       nameController.clear();
 
     }
-  }
+  }}
 
   Widget createTextField(TextEditingController controller, String hintText) {
     return Padding(

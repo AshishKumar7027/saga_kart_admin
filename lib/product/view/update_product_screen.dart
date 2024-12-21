@@ -1,5 +1,7 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:saga_kart_admin/core/app_util.dart';
 import 'package:saga_kart_admin/product/model/product_model.dart';
 import 'package:saga_kart_admin/product/provider/product_provider.dart';
 
@@ -84,12 +86,8 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                   await provider.updateProduct(
                       widget.product.id??'0', updatedProduct);
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Product updated successfully'),
-                        backgroundColor: Colors.blue,
-                      ),
-                    );
+
+                    AppUtil.showToast('Product updated successfully');
                     Navigator.pop(context);
                   }
                 },

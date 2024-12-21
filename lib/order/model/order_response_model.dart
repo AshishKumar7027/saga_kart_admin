@@ -1,21 +1,21 @@
 import 'package:saga_kart_admin/order/model/order_model.dart';
 
-class OrderModel {
-  List<Order> orders;
+class OrderResponseModel {
+  List<OrderModel>? orders;
 
-  OrderModel({required this.orders});
+  OrderResponseModel({required this.orders});
 
-  factory OrderModel.fromJson(Map<String, dynamic> json) {
-    return OrderModel(
+  factory OrderResponseModel.fromJson(Map<String, dynamic> json) {
+    return OrderResponseModel(
       orders: (json['orders'] as List)
-          .map((order) => Order.fromJson(order))
+          .map((order) => OrderModel.fromJson(order))
           .toList(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'orders': orders.map((order) => order.toJson()).toList(),
+      'orders': orders?.map((order) => order.toJson()).toList(),
     };
   }
 }

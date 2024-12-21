@@ -19,7 +19,7 @@ class CartService {
     if (response.statusCode == 201) {
       return true;
     } else {
-      throw 'product add nhi hua hai cart me';
+      throw 'Product added failed to cart';
     }
   }
 
@@ -58,6 +58,16 @@ class CartService {
       return true;
     } else {
       throw 'Unable to delete cart item';
+    }
+  }
+  Future<bool> clearCart() async {
+    Uri uri = Uri.parse(ApiEndpoint.cart);
+    final header = await ApiEndpoint.getHeader();
+    Response response = await http.delete(uri, headers: header);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw 'Unable to clear cart items';
     }
   }
 }

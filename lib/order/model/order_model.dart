@@ -1,7 +1,7 @@
 import 'package:saga_kart_admin/order/model/order_product_item_model.dart';
 import 'package:saga_kart_admin/profile/model/shipping_address_model.dart';
 
-class Order {
+class OrderModel {
   String id;
   String orderNumber;
   String user;
@@ -12,8 +12,7 @@ class Order {
   String updatedAt;
   int version;
 
-  // Constructor
-  Order({
+  OrderModel({
     required this.id,
     required this.orderNumber,
     required this.user,
@@ -25,9 +24,8 @@ class Order {
     required this.version,
   });
 
-
-  factory Order.fromJson(Map<String, dynamic> json) {
-    return Order(
+  factory OrderModel.fromJson(Map<String, dynamic> json) {
+    return OrderModel(
       id: json['_id'] ?? '',
       orderNumber: json['orderNumber'] ?? '',
       user: json['user'] ?? '',
@@ -41,7 +39,6 @@ class Order {
       version: json['__v'] ?? 0,
     );
   }
-
 
   Map<String, dynamic> toJson() {
     return {

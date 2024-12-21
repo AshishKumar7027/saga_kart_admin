@@ -21,6 +21,7 @@ class CartProvider extends ChangeNotifier {
       cartResponse = await cartService.fetchCartItems();
       isLoading = false;
     }catch(e){
+      cartResponse=null;
       isLoading = false;
       error=e.toString();
       AppUtil.showToast(error!);
@@ -72,9 +73,22 @@ class CartProvider extends ChangeNotifier {
       bool isSuccess =await  cartService.deleteCartItem(id);
       isLoading=false;
       if(isSuccess){
+        fetchCartItems();
         AppUtil.showToast('Cart item deleted successfully');
       }
 
+    }catch(e){
+      error=e.toString();
+    }
+    notifyListeners();
+  }
+  Future clearCart()async{
+    try{
+      error=null;
+      isLoading=true;
+      notifyListeners();
+      await cartService.clearCart();
+       fetchCartItems();
     }catch(e){
       error=e.toString();
     }
